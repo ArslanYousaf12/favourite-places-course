@@ -1,11 +1,13 @@
+import 'package:favourite_place_course/providers/fav_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewPlaceScreen extends StatelessWidget {
+class NewPlaceScreen extends ConsumerWidget {
   NewPlaceScreen({super.key});
   final _textEditingController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Favourite Place'),
@@ -22,8 +24,21 @@ class NewPlaceScreen extends StatelessWidget {
           ),
           ElevatedButton.icon(
             onPressed: () {
-              print(_textEditingController.text);
+              //State provider
+
+              // final newList = [
+              //   ...ref.read(favProvider.notifier).state,
+              //   _textEditingController.text
+              // ];
+              // ref.read(favProvider.notifier).state = newList;
+
+              //StateNotifier
+              ref
+                  .read(favProvider.notifier)
+                  .addNewItem(_textEditingController.text);
               _textEditingController.clear();
+              Navigator.of(context).pop();
+              print(ref.watch(favProvider));
             },
             icon: const Icon(Icons.add),
             label: const Text('Add Place'),
